@@ -36,11 +36,14 @@ pub fn angular_distance<T: PrimitiveFloat>(point1: &Point<T, 2>, point2: &Point<
 }
 
 // binary tree containing points
+#[derive(Debug)]
 pub struct TreeNode<'a, T: PrimitiveFloat, const D: usize> {
     pub point: Point<'a, T, D>,
-    pub left: &'a TreeNode<'a, T, D>,
-    pub right: &'a TreeNode<'a, T, D>,
+    pub left: Option<&'a TreeNode<'a, T, D>>,
+    pub right: Option<&'a TreeNode<'a, T, D>>,
 }
+
+// pub fn
 
 #[cfg(test)]
 mod tests {
