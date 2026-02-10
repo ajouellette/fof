@@ -8,6 +8,12 @@ pub struct Point<'a, T: PrimitiveFloat, const D: usize> {
     pub p: &'a [T; D],
 }
 
+impl<'a, T: PrimitiveFloat, const D: usize> Point<'a, T, D> {
+    pub fn new(p: &'a [T; D]) -> Self {
+        Point { p }
+    }
+}
+
 // Regular squared euclidean distance
 pub fn squared_distance<T: PrimitiveFloat, const D: usize>(
     point1: &Point<T, D>,
@@ -43,7 +49,7 @@ pub struct TreeNode<'a, T: PrimitiveFloat, const D: usize> {
     pub right: Option<&'a TreeNode<'a, T, D>>,
 }
 
-// pub fn
+pub fn make_tree<'a, T: PrimitiveFloat, const D: usize>(points: &Vec<[T; D]>) {}
 
 #[cfg(test)]
 mod tests {
@@ -51,47 +57,27 @@ mod tests {
 
     #[test]
     fn point_2d() {
-        let _point = Point { p: &[1.0, 2.0] };
+        let _point = Point::new(&[1.0, 2.0]);
     }
 
     #[test]
     fn point_3d() {
-        let _point = Point {
-            p: &[1.0, 2.0, 3.0],
-        };
+        let _point = Point::new(&[1.0, 2.0, 3.0]);
     }
 
     #[test]
     fn point_f32() {
-        let _point = Point {
-            p: &[1.0f32, 2.0f32, 3.0f32],
-        };
+        let _point = Point::new(&[1.0f32, 2.0f32, 3.0f32]);
     }
 
     #[test]
     fn point_f64() {
-        let _point = Point {
-            p: &[1.0f64, 2.0f64, 3.0f64],
-        };
+        let _point = Point::new(&[1.0f64, 2.0f64, 3.0f64]);
     }
 
     #[test]
     fn test_equality() {
-        assert_eq!(
-            Point {
-                p: &[0.0, 1.0, 2.0]
-            },
-            Point {
-                p: &[0.0, 1.0, 2.0]
-            }
-        );
-        assert_ne!(
-            Point {
-                p: &[0.0, 1.0, 2.0]
-            },
-            Point {
-                p: &[0.0, 0.5, 1.0]
-            }
-        );
+        assert_eq!(Point::new(&[0.0, 1.0, 2.0]), Point::new(&[0.0, 1.0, 2.0]));
+        assert_ne!(Point::new(&[0.0, 1.0, 2.0]), Point::new(&[0.0, 0.5, 1.0]));
     }
 }
