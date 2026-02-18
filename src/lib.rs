@@ -1,8 +1,9 @@
 use num_primitive::PrimitiveFloat;
-use std::iter;
 
+pub use distances::*;
 pub use point::{Point, points_from_slice};
 
+pub mod distances;
 pub mod point;
 pub mod tree;
 
@@ -16,6 +17,7 @@ pub fn bounding_box<T: PrimitiveFloat, const D: usize>(
     let mut min = [T::MAX; D];
     let mut max = [T::MIN; D];
 
+    // TODO: rewrite using iterators
     for point in points {
         for i in 0..D {
             min[i] = min[i].min(point.p[i]);
@@ -24,33 +26,6 @@ pub fn bounding_box<T: PrimitiveFloat, const D: usize>(
     }
 
     Some([min, max])
-}
-
-// Regular squared euclidean distance
-pub fn squared_distance<T: PrimitiveFloat, const D: usize>(
-    point1: &Point<T, D>,
-    point2: &Point<T, D>,
-) -> T {
-    iter::zip(point1.p, point2.p)
-        .map(|(a, b)| *a - b)
-        .map(|x| x * x)
-        .sum::<T>()
-}
-
-// Squared euclidean distance inside a periodic box
-pub fn squared_distance_periodic<T: PrimitiveFloat, const D: usize>(
-    point1: &Point<T, D>,
-    point2: &Point<T, D>,
-    boxsize: T,
-) -> T {
-    assert!(boxsize > T::MIN_POSITIVE);
-
-    boxsize
-}
-
-// Angular distance on a sphere
-pub fn angular_distance<T: PrimitiveFloat>(point1: &Point<T, 2>, point2: &Point<T, 2>) -> T {
-    point1.p[0]
 }
 
 // binary tree containing points
