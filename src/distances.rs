@@ -4,7 +4,7 @@ use std::iter;
 use crate::Point;
 
 // Regular squared euclidean distance
-pub fn squared_distance<T: PrimitiveFloat, const D: usize>(
+pub fn squared_euclidean<T: PrimitiveFloat, const D: usize>(
     point1: &Point<T, D>,
     point2: &Point<T, D>,
 ) -> T {
@@ -15,7 +15,7 @@ pub fn squared_distance<T: PrimitiveFloat, const D: usize>(
 }
 
 // Squared euclidean distance inside a periodic box
-pub fn squared_distance_periodic<T: PrimitiveFloat, const D: usize>(
+pub fn squared_euclidean_periodic<T: PrimitiveFloat, const D: usize>(
     point1: &Point<T, D>,
     point2: &Point<T, D>,
     boxsize: T,
