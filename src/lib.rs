@@ -1,17 +1,29 @@
 use num_primitive::PrimitiveFloat;
 use std::iter;
 
-// A n-dim Point
-// generic over either f32 or f64 and number of dimensions
-#[derive(Debug, PartialEq)]
-pub struct Point<'a, T: PrimitiveFloat, const D: usize> {
-    pub p: &'a [T; D],
-}
+pub use point::{Point, points_from_slice};
 
-impl<'a, T: PrimitiveFloat, const D: usize> Point<'a, T, D> {
-    pub fn new(p: &'a [T; D]) -> Self {
-        Point { p }
+pub mod point;
+pub mod tree;
+
+pub fn bounding_box<T: PrimitiveFloat, const D: usize>(
+    points: &[Point<T, D>],
+) -> Option<[[T; D]; 2]> {
+    if points.is_empty() {
+        return None;
     }
+
+    let mut min = [T::MAX; D];
+    let mut max = [T::MIN; D];
+
+    for point in points {
+        for i in 0..D {
+            min[i] = min[i].min(point.p[i]);
+            max[i] = max[i].max(point.p[i]);
+        }
+    }
+
+    Some([min, max])
 }
 
 // Regular squared euclidean distance
@@ -79,5 +91,12 @@ mod tests {
     fn test_equality() {
         assert_eq!(Point::new(&[0.0, 1.0, 2.0]), Point::new(&[0.0, 1.0, 2.0]));
         assert_ne!(Point::new(&[0.0, 1.0, 2.0]), Point::new(&[0.0, 0.5, 1.0]));
+    }
+
+    #[test]
+    fn test_bounding_box() {
+        let points = points_from_slice(&[[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]);
+        let expected = Some([[0.0, 0.0], [2.0, 2.0]]);
+        assert_eq!(bounding_box(&points), expected);
     }
 }
